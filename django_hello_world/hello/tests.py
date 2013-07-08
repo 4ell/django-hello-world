@@ -6,6 +6,7 @@ from django.template import RequestContext
 from json import loads
 from models import Person, ReqData
 from datetime import date, datetime
+import PIL
 
 
 class HttpTest(TestCase):
@@ -87,3 +88,52 @@ class ContextProcessorTest(TestCase):
 
         self.assertTrue('settings' in context)
         self.assertEqual(settings, context['settings'])
+
+
+class EditFormTest(TestCase):
+    def setUp(self):
+        from django.core.files import File
+        from django.core.files.uploadedfile import SimpleUploadedFile
+
+        self.image = open('django_hello_world/media/example/grey_day.jpg')
+        self.image2 = open('django_hello_world/media/example/grey_day.jpg')
+        self.form_data = {
+            'name': 'Steve',
+            'last_name': 'Jobs',
+            'birthday': date(1955, 2, 24),
+            'email': 'steve@apple.com',
+            'jabber': 'steve@apple.im',
+            'skype': 'steve_jobs',
+            'bio': 'Some information',
+            'contacts': 'Some information',
+            'photo': File(self.image2)
+        }
+
+        name = self.image.name
+        data = self.image.read()
+        self.post_dict = {
+            'photo': SimpleUploadedFile(name, data)
+        }
+
+    def test_form_simple(self):
+        from forms import PersonForm
+
+        form = PersonForm(self.form_data, self.post_dict)
+        self.assertTrue(form.is_valid())
+
+    def test_login_http(self):
+        response = self.client.post("/login/")
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post("/edit/")
+        self.assertEqual(response.status_code, 302)
+
+    def test_form_http(self):
+        login = self.client.login(username='admin', password='admin')
+        self.assertTrue(login)
+
+        response = self.client.get("/edit/")
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post("/edit/", self.form_data)
+        self.assertEqual(response.status_code, 302)
