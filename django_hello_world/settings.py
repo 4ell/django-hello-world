@@ -110,6 +110,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'south',
     #'django_coverage',
     'django.contrib.auth',
     'django.contrib.contenttypes',
