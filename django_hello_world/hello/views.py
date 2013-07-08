@@ -19,7 +19,6 @@ def requests(request):
         requests = ReqData.objects.all().order_by("-time")[:10]
     except:
         requests = []
-    print requests
     return {'requests': requests}
 
 
