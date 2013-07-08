@@ -16,5 +16,19 @@
             "email": "admin@example.com", 
             "date_joined": "2011-08-19 09:53:08"
         }
+    },
+    {
+        "pk": 1, 
+        "model": "hello.person", 
+        "fields": {
+            "bio": "Steven Paul Jobs was born on February 24, 1955, in San Francisco, California, to Joanne Schieble (later Joanne Simpson) and Abdulfattah \"John\" Jandali, two University of Wisconsin graduate students who gave their unnamed son up for adoption. His father, Abdulfattah Jandali, was a Syrian political science professor and his mother, Joanne Schieble, worked as a speech therapist. Shortly after Steve was placed for adoption, his biological parents married and had another child, Mona Simpson.", 
+            "last_name": "Sidelev", 
+            "name": "Kirill", 
+            "contacts": "NAME: Steve Jobs\r\nOCCUPATION: Entrepreneur\r\nBIRTH DATE: February 24, 1955\r\nDEATH DATE: October 05, 2011\r\nEDUCATION: Reed College, Homestead High School\r\nPLACE OF BIRTH: San Francisco, California\r\nPLACE OF DEATH: Palo Alto, California\r\nAKA: Steve Jobs\r\nAKA: Steven Jobs", 
+            "birthday": "1994-09-16", 
+            "skype": "kirell777", 
+            "jabber": "4ell@creep.im", 
+            "email": "4ell@xakep.ru"
+        }
     }
 ]
