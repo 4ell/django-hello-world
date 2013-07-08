@@ -1,6 +1,4 @@
-from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.test.client import Client
 
 from models import Person
 from datetime import date
@@ -11,7 +9,7 @@ class HttpTest(TestCase):
         params = ['name', 'last_name', 'birthday', 'email',
                   'jabber', 'skype', 'bio', 'contacts']
 
-        person = Person.objects.create(
+        Person.objects.create(
             name='Steve',
             last_name='Jobs',
             birthday=date(1955, 2, 24),
