@@ -87,3 +87,40 @@ class ContextProcessorTest(TestCase):
 
         self.assertTrue('settings' in context)
         self.assertEqual(settings, context['settings'])
+
+
+class EditFormTest(TestCase):
+    def setUp(self):
+        self.image = open('django_hello_world/media/example/grey_day.jpg')
+        self.form_data = {
+            'name': 'Steve',
+            'last_name': 'Jobs',
+            'birthday': date(1955, 2, 24),
+            'email': 'steve@apple.com',
+            'jabber': 'steve@apple.im',
+            'skype': 'steve_jobs',
+            'bio': 'Some information',
+            'contacts': 'Some information',
+            'image': self.image
+        }
+
+    def test_form_simple(self):
+        from forms import PersonForm
+
+        form = PersonForm(data=self.form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_login_http(self):
+        response = self.client.post("/login/")
+        self.assertEqual(response.status_code, 200)
+        
+        response = self.client.post("/edit/")
+        self.assertEqual(response.status_code, 302)
+
+    def test_form_http(self):
+        self.client.login()
+
+        response = self.client.post("/edit/")
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post("/edit/", self.form_data)
+        self.assertEqual(response.status_code, 200)
