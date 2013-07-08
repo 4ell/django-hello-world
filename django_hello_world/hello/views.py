@@ -6,7 +6,10 @@ from models import Person
 
 @render_to('hello/bio.html')
 def bio(request):
-    person = Person.objects.latest('id')
+    try:
+        person = Person.objects.latest('id')
+    except:
+        person = None
     return {'person': person}
 
 
