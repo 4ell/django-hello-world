@@ -1,4 +1,7 @@
 from django.test import TestCase
+from django.test.client import RequestFactory
+
+from django.template import RequestContext
 
 from json import loads
 from models import Person, ReqData
@@ -69,3 +72,18 @@ class MiddlewareTest(TestCase):
 
         response = self.client.get('/requests/')
         self.assertEqual(response.status_code, 200)
+
+
+class ContextProcessorTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_add_settings(self):
+        from django.conf import settings
+        from context_processors import add_settings
+
+        request = self.factory.get('/')
+        context = RequestContext(request, {}, processors=[add_settings])
+
+        self.assertTrue('settings' in context)
+        self.assertEqual(settings, context['settings'])
