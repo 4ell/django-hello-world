@@ -3,7 +3,8 @@
 {% block content %}
 <h3>42 Coffee Cups Test Assignment</h3>
 
-<table width="40%" cellspacing="7px">
+{% if person %}
+<table width="600px" cellspacing="7px">
   <tr>
     <td>{{ person.name }}</td>
     <td>Contacts</td>
@@ -29,5 +30,8 @@
     <td>{{ person.contacts }}</td>
   </tr>
 </table>
+{% else %}
+No candidates in db.
+{% endif %}
 
 {% endblock content %}
