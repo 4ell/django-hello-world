@@ -1,39 +1,59 @@
 {% extends "base.html" %}
 
+{% block menu %}
+
+  {% if user.is_authenticated %}
+    <a href="/edit">edit</a>
+    <a href="/logout">logout</a>
+  {% else %}
+    <a href="/login">login</a>
+  {% endif %}
+
+{% endblock menu %}
+
 {% block content %}
-<h3>42 Coffee Cups Test Assignment</h3>
 
 {% if person %}
-<table width="600px" cellspacing="7px">
-  <tr>
-    <td>{{ person.name }}</td>
-    <td>Contacts</td>
-  </tr>
-  <tr>
-    <td>{{ person.last_name }}</td>
-    <td>Email: email</td>
-  </tr>
-  <tr>
-    <td>{{ person.birthday }}</td>
-    <td>Jabber: {{ person.email }}</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>Skype: {{ person.skype }}</td>
-  </tr>
-  <tr>
-    <td>Bio:</td>
-    <td>Other contacts:</td>
-  </tr>
-  <tr style="vertical-align: top;">
-    <td>{{ person.bio }}</td>
-    <td>{{ person.contacts }}</td>
-  </tr>
-</table>
+  <div class="dark">
+  <table id="bio" cellspacing="7px">
+    <tr>
+      <td>{{ person.name }}</td>
+      <td>Contacts</td>
+    </tr>
+    <tr>
+      <td>{{ person.last_name }}</td>
+      <td>Email: {{ person.email }}</td>
+    </tr>
+    <tr>
+      <td>{{ person.birthday }}</td>
+      <td>Jabber: {{ person.jabber }}</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>Skype: {{ person.skype }}</td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>Bio:</td>
+    </tr>
+    <tr>
+      <td rowspan="3">
+        <img src="{{ settings.MEDIA_URL }}{{ person.photo }}" class="photo">
+      </td>
+      <td>{{ person.bio }}</td>
+    </tr>
+    <tr>
+      <td>Other contacts:</td>
+    </tr>
+    <tr>
+      <td>{{ person.contacts }}</td>
+    </tr>
+  </table>
+  </div>
 {% else %}
-No candidates in db.
+  No candidates in db.
 {% endif %}
-<div style="width:600px; height:2px; background: gray;">&nbsp;</div>
+
 <a href='/requests'>requests</a>
 
 {% endblock content %}
