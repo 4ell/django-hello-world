@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>42 Coffee Cups Test Assignment</h3>
+
+<table width="40%" cellspacing="7px">
+  <tr>
+    <td>{{ person.name }}</td>
+    <td>Contacts</td>
+  </tr>
+  <tr>
+    <td>{{ person.last_name }}</td>
+    <td>Email: email</td>
+  </tr>
+  <tr>
+    <td>{{ person.birthday }}</td>
+    <td>Jabber: {{ person.email }}</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Skype: {{ person.skype }}</td>
+  </tr>
+  <tr>
+    <td>Bio:</td>
+    <td>Other contacts:</td>
+  </tr>
+  <tr style="vertical-align: top;">
+    <td>{{ person.bio }}</td>
+    <td>{{ person.contacts }}</td>
+  </tr>
+</table>
+
+{% endblock content %}
