@@ -110,6 +110,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    #'django_coverage',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -145,3 +146,9 @@ LOGGING = {
         },
     }
 }
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django_hello_world.hello.context_processors.add_settings',
+)
+#TEST_RUNNER = 'django_coverage.coverage_runner.CoverageRunner'
