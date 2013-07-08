@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if requests.count %}
+<h3>Last {{ requests.count }} requests.</h3>
+{% else %}
+<h3>Request list is empty.</h3>
+{% endif %}
+
+{% for req in requests %}
+<div class="request">
+  Reqest #{{ forloop.counter0 }}
+  Time: {{ req.time }} <br>
+  Path: {{ req.path }}
+  Post: {{ req.post }}
+  Get: {{ req.get }}
+  Cookies: {{ req.cookies }}
+</div> <br>
+{% endfor %}
+
+<div style="width:600px; height:2px; background: gray;">&nbsp;</div>
+<a href='/'>back</a>
+
+{% endblock content %}
