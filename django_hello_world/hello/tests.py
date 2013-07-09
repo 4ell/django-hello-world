@@ -44,8 +44,6 @@ class MiddlewareTest(TestCase):
         )
 
     def test_do_requests(self):
-        self.client.get('/')
-
         for i in range(5):
             self.client.get('/?{0}={1}'.format(i, i**2))
 
@@ -54,23 +52,26 @@ class MiddlewareTest(TestCase):
         for i in range(5):
             self.client.post('/', {i: i**2})
 
-        requests = ReqData.objects.all().reverse()[:11]
-        self.assertTrue(requests.exists())
-        for req in requests:
-            get = loads(req.get)
-            post = loads(req.post)
-            for i in get.items():
-                k, v = map(int, i)
-                self.assertEqual(k**2, v)
-            for i in post.items():
-                k, v = map(int, i)
-                self.assertEqual(k**2, v)
+        response = self.client.get('/requests/')
 
-    def test_views(self):
+        templ = '{0}: {{&quot;{1}&quot;: &quot;{2}&quot;}}'
+        for i in range(5):
+            data = templ.format('Post', i, i**2)
+            self.assertContains(response, data)
+
+        for i in range(1, 5):
+            data = templ.format('Get', i, i**2)
+            self.assertContains(response, data)
+
+        self.assertContains(response, 'Path: /requests/')
+
+
+    def test_views_requests(self):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'requests')
 
+    def test_views_requests(self):
         response = self.client.get('/requests/')
         self.assertEqual(response.status_code, 200)
 
