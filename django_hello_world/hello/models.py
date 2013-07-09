@@ -10,6 +10,17 @@ class Person(models.Model):
     skype = models.CharField(max_length=30)
     bio = models.TextField()
     contacts = models.TextField()
+    photo = models.ImageField(upload_to='photos')
+
+    def save(self, *args, **kwargs):
+        # delete old file when replacing by updating the file
+        try:
+            this = Person.objects.get(id=self.id)
+            if this.photo != self.photo:
+                this.photo.delete(save=False)
+        except:
+            pass  # when new photo then we do nothing, normal case 
+        super(Person, self).save(*args, **kwargs)
 
 
 class ReqData(models.Model):

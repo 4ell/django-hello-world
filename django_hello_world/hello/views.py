@@ -1,6 +1,9 @@
 from annoying.decorators import render_to
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 
+from forms import PersonForm
 from models import Person, ReqData
 
 
@@ -11,6 +14,24 @@ def bio(request):
     except:
         person = None
     return {'person': person}
+
+
+@login_required
+@render_to('hello/edit.html')
+def edit(request):
+    try:
+        person = Person.objects.latest('id')
+    except:
+        person = Person()
+
+    post = request.POST or None
+    data = request.FILES or None
+    form = PersonForm(post, data, instance=person)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect('/')
+    else:
+        return {'form': form}
 
 
 @render_to('hello/reqs.html')

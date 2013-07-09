@@ -1,2 +1,5 @@
 *.pyc
 *.sqlite3
+.gitignore
+env/
+django_hello_world/media/photos/*
