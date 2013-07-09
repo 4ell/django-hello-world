@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
+{% block menu %}
+    <a href="/">home</a>
+{% endblock menu %}
+
 {% block content %}
 
+<div class="dark">
 {% if requests.count %}
 <h3>Last {{ requests.count }} requests.</h3>
 {% else %}
@@ -18,8 +23,8 @@
   Cookies: {{ req.cookies }}
 </div> <br>
 {% endfor %}
+</div>
 
-<div style="width:600px; height:2px; background: gray;">&nbsp;</div>
 <a href='/'>back</a>
 
 {% endblock content %}

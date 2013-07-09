@@ -1,6 +1,19 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html>
-<head><title>{% block title %}No title{% endblock %}</title></head>
-<body>{% block body %}{% block content %}{% endblock content %}{% endblock body %}</body>
+  <head>
+    <title>{% block title %}No title{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="{{ settings.STATIC_URL }}css/style.css">
+  </head>
+  <body>
+    {% block body %}
+    <div id="menu">
+      <h2>42 Coffee Cups Test Assignment</h2>
+      <div class="links">
+        {% block menu %}{% endblock menu %}
+      </div>
+    </div>
+    {% block content %}
+    {% endblock content %}
+    {% endblock body %}
+  </body>
 </html>

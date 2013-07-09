@@ -45,12 +45,12 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = 'django_hello_world/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -72,6 +72,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    'django_hello_world/static/',
 )
 
 # List of finder classes that know how to find static files in
@@ -93,6 +94,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'annoying.middlewares.StaticServe',
     'django_hello_world.hello.middleware.RequestStoringMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -110,6 +112,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'south',
     #'django_coverage',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -151,4 +154,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django_hello_world.hello.context_processors.add_settings',
 )
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+
 #TEST_RUNNER = 'django_coverage.coverage_runner.CoverageRunner'

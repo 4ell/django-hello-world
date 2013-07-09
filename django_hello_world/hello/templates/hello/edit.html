@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block menu %}
+
+  {% if user.is_authenticated %}
+    <a href="/">home</a>
+    <a href="/logout">logout</a>
+  {% else %}
+    <a href="/login">login</a>
+  {% endif %}
+
+{% endblock menu %}
+
+{% block content %}
+
+{% if form.errors %}
+<div id="form-error">
+  <p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>
+  <ul>
+  {% for field in form %}
+    {% if field.errors %}
+    <li>{{ field.name }}: {{ field.errors|striptags }}</li>
+    {% endif %}
+  {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+{% if form %}
+  <div class="dark">
+  <form id="bio" method="post" action="/edit/" enctype="multipart/form-data">
+  {% csrf_token %}
+    <table cellspacing="7px">
+      <tr>
+        <td>Name:</td>
+        <td>{{ form.name }}</td>
+        <td>Email:</td>
+        <td>{{ form.email }}</td>
+      </tr>
+      <tr>
+        <td>Last name:</td>
+        <td>{{ form.last_name }}</td>
+        <td>Jabber:</td>
+        <td>{{ form.jabber }}</td>
+      </tr>
+      <tr>
+        <td>Date of birth:</td>
+        <td>{{ form.birthday }}</td>
+        <td>Skype:</td>
+        <td>{{ form.skype }}</td>
+      </tr>
+      <tr>
+        <td>Photo:</td>
+        <td>{{ form.photo }}</td>
+        <td colspan="2">Bio:</td>
+      </tr>
+      <tr style="vertical-align: top;">
+        <td colspan="2" rowspan="3">
+          <img src="{{ settings.MEDIA_URL }}{{ form.photo.value }}" class="photo">
+        </td>
+        <td colspan="2">{{ form.bio }}</td>
+      </tr>
+      <tr>
+        <td colspan="2">Other contacts:</td>
+      </tr>
+      <tr>
+        <td colspan="2">{{ form.contacts }}</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input type="submit" value="Save">
+          <a href='/'>cancel</a>
+        </td>
+      <tr>
+    </table>
+    </div>
+
+  </form>
+{% else %}
+  No candidates in db.
+{% endif %}
+
+<a href='/requests'>requests</a>
+
+<script type="text/javascript" src="{{ settings.STATIC_URL }}/js/show_photo.js"></script>
+{% endblock content %}
