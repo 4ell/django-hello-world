@@ -80,15 +80,23 @@ class ContextProcessorTest(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
 
-    def test_add_settings(self):
+    def check_context(self, context):
         from django.conf import settings
+
+        self.assertTrue('settings' in context)
+        self.assertEqual(settings, context['settings'])
+
+    def test_add_settings_separatly(self):
         from context_processors import add_settings
 
         request = self.factory.get('/')
         context = RequestContext(request, {}, processors=[add_settings])
 
-        self.assertTrue('settings' in context)
-        self.assertEqual(settings, context['settings'])
+        self.check_context(context)
+
+    def test_add_settings_http(self):
+        request = self.client.get('/')
+        self.check_context(request.context)
 
 
 class EditFormTest(TestCase):
