@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 
-{% block menu %}
+{% block head %}
+  {{ form.media }}
+  <script type="text/javascript" src="{{ settings.STATIC_URL }}js/edit.js"></script>
+{% endblock head%}
 
+{% block menu %}
   {% if user.is_authenticated %}
     <a href="/">home</a>
     <a href="/logout">logout</a>
   {% else %}
     <a href="/login">login</a>
   {% endif %}
-
 {% endblock menu %}
 
 {% block content %}
@@ -73,14 +76,11 @@
         </td>
       <tr>
     </table>
-    </div>
-
   </form>
+  </div>
 {% else %}
   No candidates in db.
 {% endif %}
 
 <a href='/requests'>requests</a>
-
-<script type="text/javascript" src="{{ settings.STATIC_URL }}/js/show_photo.js"></script>
 {% endblock content %}

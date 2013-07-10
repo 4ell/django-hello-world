@@ -135,17 +135,44 @@ class EditFormTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         response = self.client.get("/edit/")
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_form_ajax(self):
+        response = self.client.post("/edit/save/")
+        content = loads(response.content)
+        self.assertTrue('saved' in content)
+        self.assertTrue('errors' in content)
+        self.assertEqual(content['saved'], False)
+
         login = self.client.login(username='admin', password='admin')
         self.assertTrue(login)
 
-        response = loads(self.client.post("/edit/save/", {'0': '0'}))
-        self.assertContains(response, 'saved')
-        self.assertContains(response, 'errors')
-        self.assertEqual(response['saved'], False)
+        response = self.client.post("/edit/save/", {'0': '0'})
+        content = loads(response.content)
+        self.assertTrue('saved' in content)
+        self.assertTrue('errors' in content)
+        self.assertEqual(content['saved'], False)
 
-        response = loads(self.client.post("/edit/save/", self.form_data))
-        self.assertContains(response, 'saved')
-        self.assertEqual(response['saved'], True)
+        response = self.client.post("/edit/save/", self.form_data)
+        content = loads(response.content)
+        self.assertTrue('saved' in content)
+        self.assertEqual(content['saved'], True)
+
+        items = self.form_data.items()
+        person = Person.objects.latest('id')
+        for field, value in items:
+            attr = getattr(person, field)
+            if field == 'photo':
+                self.assertEqual(value.size, attr.size)
+                continue
+            self.assertEqual(attr, value)
+
+
+class DatepickerTest(TestCase):
+    def test_datepicker_silly(self):
+        login = self.client.login(username='admin', password='admin')
+        self.assertTrue(login)
+
+        response = self.client.post("/edit/")
+
+        self.assertContains('jquery_datepicker')

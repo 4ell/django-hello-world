@@ -1,4 +1,4 @@
-from annoying.decorators import render_to
+from annoying.decorators import render_to, ajax_request
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -23,15 +23,23 @@ def edit(request):
         person = Person.objects.latest('id')
     except:
         person = Person()
+    return {
+        'form': PersonForm(instance=person)
+    }
 
+
+@ajax_request
+def save_person(request):
+    if not request.user.is_authenticated():
+        return {'saved': False, 'errors':['Not authenticated']}
     post = request.POST or None
     data = request.FILES or None
-    form = PersonForm(post, data, instance=person)
+    form = PersonForm(post, data)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect('/')
+        return {'saved': True}
     else:
-        return {'form': form}
+        return {'saved': False, 'errors': form.errors}
 
 
 @render_to('hello/reqs.html')
