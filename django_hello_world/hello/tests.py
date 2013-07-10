@@ -175,4 +175,4 @@ class DatepickerTest(TestCase):
 
         response = self.client.post("/edit/")
 
-        self.assertContains('jquery_datepicker')
+        self.assertContains(response, 'jquery_datepicker')
