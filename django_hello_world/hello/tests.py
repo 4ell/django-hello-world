@@ -134,15 +134,18 @@ class EditFormTest(TestCase):
         response = self.client.post("/login/")
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post("/edit/")
-        self.assertEqual(response.status_code, 302)
-
-    def test_form_http(self):
-        login = self.client.login(username='admin', password='admin')
-        self.assertTrue(login)
-
         response = self.client.get("/edit/")
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post("/edit/", self.form_data)
-        self.assertEqual(response.status_code, 302)
+    def test_form_ajax(self):
+        login = self.client.login(username='admin', password='admin')
+        self.assertTrue(login)
+
+        response = loads(self.client.post("/edit/save/", {'0': '0'}))
+        self.assertContains(response, 'saved')
+        self.assertContains(response, 'errors')
+        self.assertEqual(response['saved'], False)
+
+        response = loads(self.client.post("/edit/save/", self.form_data))
+        self.assertContains(response, 'saved')
+        self.assertEqual(response['saved'], True)
