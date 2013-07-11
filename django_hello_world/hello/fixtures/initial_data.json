@@ -30,5 +30,16 @@
             "jabber": "4ell@creep.im", 
             "email": "4ell@xakep.ru"
         }
+    },
+    {
+        "pk": 1, 
+        "model": "hello.reqdata", 
+        "fields": {
+            "path": "/edit/save/",
+            "get": "{}",
+            "post": "{}",
+            "cookies": "{}",
+            "time": "2013-07-11 06:41:33.686690"
+        }
     }
 ]

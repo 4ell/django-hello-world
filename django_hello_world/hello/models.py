@@ -22,6 +22,9 @@ class Person(models.Model):
             pass  # when new photo then we do nothing, normal case 
         super(Person, self).save(*args, **kwargs)
 
+    def __unicode__(self):
+        return '{0} {1}'.format(self.name, self.last_name)
+
 
 class ReqData(models.Model):
     time = models.DateTimeField(auto_now_add=True)
@@ -29,3 +32,6 @@ class ReqData(models.Model):
     get = models.TextField()
     post = models.TextField()
     cookies = models.TextField()
+
+    def __unicode__(self):
+        return '{0} {1}'.format(self.time, self.path)
