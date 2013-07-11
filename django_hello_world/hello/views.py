@@ -32,9 +32,16 @@ def edit(request):
 def save_person(request):
     if not request.user.is_authenticated():
         return {'saved': False, 'errors':['Not authenticated']}
+
+    try:
+        person = Person.objects.latest('id')
+    except:
+        person = Person()
+
     post = request.POST or None
     data = request.FILES or None
-    form = PersonForm(post, data)
+    form = PersonForm(post, data, instance=person)
+
     if form.is_valid():
         form.save()
         return {'saved': True}
