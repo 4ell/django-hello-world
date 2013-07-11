@@ -167,6 +167,9 @@ class EditFormTest(TestCase):
                 continue
             self.assertEqual(attr, value)
 
+        # Editing should not affect number of objects
+        self.assertEqual(Person.objects.count(), 1)
+
 
 class DatepickerTest(TestCase):
     def test_datepicker_silly(self):
