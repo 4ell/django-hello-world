@@ -176,3 +176,28 @@ class DatepickerTest(TestCase):
         response = self.client.post("/edit/")
 
         self.assertContains(response, 'jquery_datepicker')
+
+
+class TemplateTagTest(TestCase):
+    def render_template(self, template, context={}):
+        from django.template import Context, Template
+        template = Template(template)
+        context = Context(context)
+        return template.render(context)
+
+    def test_edit_page(self):
+        context = {
+            'req': ReqData.objects.latest('time'),
+            'person': Person.objects.latest('id')
+        }
+        rendered = self.render_template(
+            '{% load edit_link %}'
+            '{% edit_link req %}\n'
+            '{% edit_link person %}',
+            context
+        )
+        self.assertEqual(
+            rendered, 
+            "/admin/hello/reqdata/1/\n"
+            "/admin/hello/person/1/"
+        )
