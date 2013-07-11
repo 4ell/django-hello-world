@@ -17,22 +17,12 @@
 
 {% block content %}
 
-{% if form.errors %}
-<div id="form-error">
-  <p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>
-  <ul>
-  {% for field in form %}
-    {% if field.errors %}
-    <li>{{ field.name }}: {{ field.errors|striptags }}</li>
-    {% endif %}
-  {% endfor %}
-  </ul>
-</div>
-{% endif %}
-
 {% if form %}
   <div class="dark">
-  <div id="form-error"></div>
+  <div id="form-error" style="display:none">
+    <p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>
+    <ul></ul>
+  </div>
   <form id="bio" method="post" action="/edit/save/" enctype="multipart/form-data">
   {% csrf_token %}
     <table cellspacing="7px">

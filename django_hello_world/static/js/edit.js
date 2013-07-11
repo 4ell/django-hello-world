@@ -32,8 +32,24 @@ function show_status(msg, color, timeout) {
 }
 
 function show_errors(errors) {
-	// body...
-	console.log(errors)
+	var code = ''
+	for(err in errors) {
+		code += '<li>'
+		var val = errors[err]
+		if(typeof err === 'string')
+			code += err + ': '
+		if(val instanceof Array)
+			code += val.join()
+		else
+			code += val
+		code += '</li>\n'
+	}
+	$('#form-error ul').html(code)
+	$('#form-error').show()
+}
+
+function hide_errors() {
+	$('#form-error').hide()
 }
 
 $(document).ready(function() {
@@ -41,15 +57,26 @@ $(document).ready(function() {
 	$('form#bio').ajaxForm({
 		beforeSubmit: function() {
 			show_status('Sending...')
+			$("form#bio :input").attr("disabled", true);
 		},
 		success: function(response) {
 			if(response.saved) {
 				show_status('Saved', 'success')
+				hide_errors()
 			} else {
 				show_status('Error', 'error')
 				show_errors(response.errors)
 			}
 		},
-		timeout: 1500
+		uploadProgress: function (event, position, total, percentComplete) {
+			var percentVal = percentComplete + '%';
+			show_status('Uploading '+percentVal+'...')
+		},
+		complete: function (xhr) {
+			if(xhr.status != 200) {
+				show_status('Unknown error', 'error')
+			}
+			$("form#bio :input").attr("disabled", false);
+		}
 	})
 })
