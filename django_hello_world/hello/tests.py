@@ -134,15 +134,45 @@ class EditFormTest(TestCase):
         response = self.client.post("/login/")
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post("/edit/")
+        response = self.client.get("/edit/")
         self.assertEqual(response.status_code, 302)
 
-    def test_form_http(self):
+    def test_form_ajax(self):
+        response = self.client.post("/edit/save/")
+        content = loads(response.content)
+        self.assertTrue('saved' in content)
+        self.assertTrue('errors' in content)
+        self.assertEqual(content['saved'], False)
+
         login = self.client.login(username='admin', password='admin')
         self.assertTrue(login)
 
-        response = self.client.get("/edit/")
-        self.assertEqual(response.status_code, 200)
+        response = self.client.post("/edit/save/", {'0': '0'})
+        content = loads(response.content)
+        self.assertTrue('saved' in content)
+        self.assertTrue('errors' in content)
+        self.assertEqual(content['saved'], False)
 
-        response = self.client.post("/edit/", self.form_data)
-        self.assertEqual(response.status_code, 302)
+        response = self.client.post("/edit/save/", self.form_data)
+        content = loads(response.content)
+        self.assertTrue('saved' in content)
+        self.assertEqual(content['saved'], True)
+
+        items = self.form_data.items()
+        person = Person.objects.latest('id')
+        for field, value in items:
+            attr = getattr(person, field)
+            if field == 'photo':
+                self.assertEqual(value.size, attr.size)
+                continue
+            self.assertEqual(attr, value)
+
+
+class DatepickerTest(TestCase):
+    def test_datepicker_silly(self):
+        login = self.client.login(username='admin', password='admin')
+        self.assertTrue(login)
+
+        response = self.client.post("/edit/")
+
+        self.assertContains(response, 'jquery_datepicker')

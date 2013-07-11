@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'django_hello_world.hello.views.bio', name='bio'),
     # url(r'^django_hello_world/', include('django_hello_world.foo.urls')),
+    url(r'^edit/save/', 'django_hello_world.hello.views.save_person', name='save_person'),
     url(r'^edit/', 'django_hello_world.hello.views.edit', name='edit'),
 
     url(r'^requests/', 'django_hello_world.hello.views.requests', name='requests'),

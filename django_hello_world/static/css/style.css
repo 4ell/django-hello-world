@@ -74,3 +74,22 @@ input[type=submit] {
 	background: #222222;
     color: white;
 }
+
+#menu .status {
+   margin-left: 70px;
+   font-size: 13px;
+   padding: 2px 7px;
+   border-radius: 3px;
+   background: #fff;
+   color: black;
+}
+
+#menu .status.success {
+   background: #8DC902;
+   color: white;
+}
+
+#menu .status.error {
+   background: #D02F38;
+   color: white;
+}

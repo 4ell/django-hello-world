@@ -1,34 +1,29 @@
 {% extends "base.html" %}
 
-{% block menu %}
+{% block head %}
+  {{ form.media }}
+  <script type="text/javascript" src="{{ settings.STATIC_URL }}js/jquery.form.min.js"></script>
+  <script type="text/javascript" src="{{ settings.STATIC_URL }}js/edit.js"></script>
+{% endblock head%}
 
+{% block menu %}
   {% if user.is_authenticated %}
     <a href="/">home</a>
     <a href="/logout">logout</a>
   {% else %}
     <a href="/login">login</a>
   {% endif %}
-
 {% endblock menu %}
 
 {% block content %}
 
-{% if form.errors %}
-<div id="form-error">
-  <p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>
-  <ul>
-  {% for field in form %}
-    {% if field.errors %}
-    <li>{{ field.name }}: {{ field.errors|striptags }}</li>
-    {% endif %}
-  {% endfor %}
-  </ul>
-</div>
-{% endif %}
-
 {% if form %}
   <div class="dark">
-  <form id="bio" method="post" action="/edit/" enctype="multipart/form-data">
+  <div id="form-error" style="display:none">
+    <p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>
+    <ul></ul>
+  </div>
+  <form id="bio" method="post" action="/edit/save/" enctype="multipart/form-data">
   {% csrf_token %}
     <table cellspacing="7px">
       <tr>
@@ -73,14 +68,11 @@
         </td>
       <tr>
     </table>
-    </div>
-
   </form>
+  </div>
 {% else %}
   No candidates in db.
 {% endif %}
 
 <a href='/requests'>requests</a>
-
-<script type="text/javascript" src="{{ settings.STATIC_URL }}/js/show_photo.js"></script>
 {% endblock content %}
