@@ -2,6 +2,7 @@
 
 {% block head %}
   {{ form.media }}
+  <script type="text/javascript" src="{{ settings.STATIC_URL }}js/jquery.form.min.js"></script>
   <script type="text/javascript" src="{{ settings.STATIC_URL }}js/edit.js"></script>
 {% endblock head%}
 
@@ -31,7 +32,8 @@
 
 {% if form %}
   <div class="dark">
-  <form id="bio" method="post" action="/edit/" enctype="multipart/form-data">
+  <div id="form-error"></div>
+  <form id="bio" method="post" action="/edit/save/" enctype="multipart/form-data">
   {% csrf_token %}
     <table cellspacing="7px">
       <tr>
