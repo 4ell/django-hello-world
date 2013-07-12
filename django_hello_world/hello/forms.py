@@ -9,5 +9,5 @@ class PersonForm(ModelForm):
 
         widgets = {
             'birthday': JQueryDatepicker(),
-            'photo': ClearableFileInput(attrs={'onchange': 'show_photo()'})
+            'photo': ClearableFileInput(attrs={'onchange': 'ui.photo.show()'})
         }
