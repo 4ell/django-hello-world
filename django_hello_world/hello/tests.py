@@ -214,3 +214,15 @@ class TemplateTagTest(TestCase):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertRegexpMatches(response.content, pattern)
+
+
+class CommandsTestCase(TestCase):
+    def test_models_command(self):
+        import os
+
+        fout = os.popen4('make this command="models"')[1]
+        result = fout.read()
+
+        self.assertTrue('ReqData' in result)
+        self.assertTrue('Person' in result)
+        self.assertTrue('Count' in result)
