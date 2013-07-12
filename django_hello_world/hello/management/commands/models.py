@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import models
 
+
 class Command(BaseCommand):
     args = ''
     help = 'Prints all project models'
@@ -20,4 +21,4 @@ class Command(BaseCommand):
         result = ''.join(result)
         resulte = ''.join(resulte)
         self.stdout.write(result)
-        self.stderr.write('error: '+resulte)
+        self.stderr.write('error: ' + resulte)

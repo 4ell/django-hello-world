@@ -19,7 +19,7 @@ class Person(models.Model):
             if this.photo != self.photo:
                 this.photo.delete(save=False)
         except:
-            pass  # when new photo then we do nothing, normal case 
+            pass  # when new photo then we do nothing, normal case
         super(Person, self).save(*args, **kwargs)
 
     def __unicode__(self):
