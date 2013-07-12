@@ -201,3 +201,13 @@ class TemplateTagTest(TestCase):
             "/admin/hello/reqdata/1/\n"
             "/admin/hello/person/1/"
         )
+
+    def test_index_page(self):
+        login = self.client.login(username='admin', password='admin')
+        self.assertTrue(login)
+
+        pattern = '<a href="/admin/hello/person/\d+/">.+?</a>'
+
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertRegexpMatches(response.content, pattern)
