@@ -263,6 +263,7 @@ class SignalTestCase(TestCase):
             ['Person', 'create'], 
         ]
 
-        for model, action in models_actions:
-            self.assertEqual(actions[0].model, model)
-            self.assertEqual(actions[0].action, action) 
+        for index, value in enumerate(models_actions):
+            model, action = value
+            self.assertEqual(actions[index].model, model)
+            self.assertEqual(actions[index].action, action) 

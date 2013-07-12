@@ -1,4 +1,5 @@
 from django.db import models
+from annoying.decorators import signals
 
 
 class Person(models.Model):
@@ -35,3 +36,41 @@ class ReqData(models.Model):
 
     def __unicode__(self):
         return '{0} {1}'.format(self.time, self.path)
+
+
+class Action(models.Model):
+    time = models.DateTimeField(auto_now_add=True)
+    model = models.CharField(max_length=30)
+    action = models.CharField(max_length=10)
+    object_id = models.IntegerField()
+
+
+@signals.post_save()
+def savehandler(instance, **options):
+    model = instance._meta.object_name
+    action = 'create' if options['created'] else 'edit'
+    if model == 'Action':
+        return
+    try:
+        Action.objects.create(
+            model=model,
+            action=action,
+            object_id=instance.id
+        )
+    except:
+        return
+
+
+@signals.post_delete()
+def delhandler(instance, **options):
+    model = instance._meta.object_name
+    if model == 'Action':
+        return
+    try:
+        Action.objects.create(
+            model=model,
+            action='delete',
+            object_id=instance.id
+        )
+    except:
+        return
