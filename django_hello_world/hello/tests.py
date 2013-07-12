@@ -4,7 +4,7 @@ from django.test.client import RequestFactory
 from django.template import RequestContext
 
 from json import loads
-from models import Person, ReqData
+from models import Person, ReqData, Action
 from datetime import date, datetime
 import PIL
 
@@ -226,3 +226,43 @@ class CommandsTestCase(TestCase):
         self.assertTrue('ReqData' in result)
         self.assertTrue('Person' in result)
         self.assertTrue('Count' in result)
+
+
+class SignalTestCase(TestCase):
+    def test_data_saving(self):
+        Person.objects.create(
+            name='Steve',
+            last_name='JKobs',
+            birthday=date(1955, 2, 24),
+            email='steve@apple.com',
+            jabber='steve@apple.im',
+            skype='steve_jobs',
+            bio='Some information',
+            contacts='Some information'
+        ).save()
+
+        person = Person.objects.latest('id')
+        person.last_name = 'Jobs'
+        person.save()
+
+        person.delete()
+
+        ReqData.objects.create(
+            time=datetime.now(),
+            path='/', get='{0:0}',
+            post='{}', cookies='{}'
+        ).save()
+
+        actions = Action.objects.order_by("-time")
+        actions = list(actions)
+
+        models_actions = [
+            ['ReqData', 'create'], 
+            ['Person', 'delete'], 
+            ['Person', 'edit'], 
+            ['Person', 'create'], 
+        ]
+
+        for model, action in models_actions:
+            self.assertEqual(actions[0].model, model)
+            self.assertEqual(actions[0].action, action) 
