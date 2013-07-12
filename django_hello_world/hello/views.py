@@ -1,6 +1,5 @@
 from annoying.decorators import render_to, ajax_request
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
 from forms import PersonForm
@@ -31,7 +30,7 @@ def edit(request):
 @ajax_request
 def save_person(request):
     if not request.user.is_authenticated():
-        return {'saved': False, 'errors':['Not authenticated']}
+        return {'saved': False, 'errors': ['Not authenticated']}
 
     try:
         person = Person.objects.latest('id')

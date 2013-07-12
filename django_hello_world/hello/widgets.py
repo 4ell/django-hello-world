@@ -1,6 +1,7 @@
 from django.forms.widgets import DateInput
 from django.conf import settings
 
+
 class JQueryDatepicker(DateInput):
     class Media:
         css = {
