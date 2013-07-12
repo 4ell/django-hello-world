@@ -44,6 +44,9 @@ class Action(models.Model):
     action = models.CharField(max_length=10)
     object_id = models.IntegerField()
 
+    def __unicode__(self):
+        return '{0} {1}'.format(self.action, self.model)
+
 
 @signals.post_save()
 def savehandler(instance, **options):

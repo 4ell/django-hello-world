@@ -239,7 +239,7 @@ class SignalTestCase(TestCase):
             skype='steve_jobs',
             bio='Some information',
             contacts='Some information'
-        ).save()
+        )
 
         person = Person.objects.latest('id')
         person.last_name = 'Jobs'
@@ -251,9 +251,9 @@ class SignalTestCase(TestCase):
             time=datetime.now(),
             path='/', get='{0:0}',
             post='{}', cookies='{}'
-        ).save()
+        )
 
-        actions = Action.objects.order_by("-time")
+        actions = Action.objects.order_by("-time")[:4]
         actions = list(actions)
 
         models_actions = [
@@ -262,6 +262,8 @@ class SignalTestCase(TestCase):
             ['Person', 'edit'], 
             ['Person', 'create'], 
         ]
+
+        self.assertEqual(len(actions), 4)
 
         for index, value in enumerate(models_actions):
             model, action = value
