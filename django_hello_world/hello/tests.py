@@ -204,3 +204,15 @@ class TemplateTagTest(TestCase):
             "/admin/hello/reqdata/1/\n"
             "/admin/hello/person/1/"
         )
+
+
+class CommandsTestCase(TestCase):
+    def test_models_command(self):
+        import os
+
+        fout = os.popen4('make this command="models"')[1]
+        result = fout.read()
+
+        self.assertTrue('ReqData' in result)
+        self.assertTrue('Person' in result)
+        self.assertTrue('Count' in result)
