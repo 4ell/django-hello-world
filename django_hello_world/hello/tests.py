@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.test.client import RequestFactory
+from django.core.urlresolvers import reverse
 
 from django.template import RequestContext
 
@@ -25,7 +26,7 @@ class HttpTest(TestCase):
             contacts='Some information'
         )
 
-        response = self.client.get('/')
+        response = self.client.get(reverse('bio'))
         self.assertEqual(response.status_code, 200)
         self.assertTrue('person' in response.context)
         for param in params:
@@ -52,7 +53,7 @@ class MiddlewareTest(TestCase):
         for i in range(5):
             self.client.post('/', {i: i**2})
 
-        response = self.client.get('/requests/')
+        response = self.client.get(reverse('requests'))
 
         templ = '{0}: {{&quot;{1}&quot;: &quot;{2}&quot;}}'
         for i in range(5):
@@ -67,12 +68,12 @@ class MiddlewareTest(TestCase):
 
 
     def test_views_requests(self):
-        response = self.client.get('/')
+        response = self.client.get(reverse('bio'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'requests')
 
     def test_views_requests(self):
-        response = self.client.get('/requests/')
+        response = self.client.get(reverse('requests'))
         self.assertEqual(response.status_code, 200)
 
 
@@ -95,7 +96,7 @@ class ContextProcessorTest(TestCase):
         self.check_context(context)
 
     def test_add_settings_http(self):
-        request = self.client.get('/')
+        request = self.client.get(reverse('bio'))
         self.check_context(request.context)
 
 
@@ -134,11 +135,11 @@ class EditFormTest(TestCase):
         response = self.client.post("/login/")
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get("/edit/")
+        response = self.client.get(reverse('edit'))
         self.assertEqual(response.status_code, 302)
 
     def test_form_ajax(self):
-        response = self.client.post("/edit/save/")
+        response = self.client.post(reverse('save_person'))
         content = loads(response.content)
         self.assertTrue('saved' in content)
         self.assertTrue('errors' in content)
@@ -147,13 +148,13 @@ class EditFormTest(TestCase):
         login = self.client.login(username='admin', password='admin')
         self.assertTrue(login)
 
-        response = self.client.post("/edit/save/", {'0': '0'})
+        response = self.client.post(reverse('save_person'), {'0': '0'})
         content = loads(response.content)
         self.assertTrue('saved' in content)
         self.assertTrue('errors' in content)
         self.assertEqual(content['saved'], False)
 
-        response = self.client.post("/edit/save/", self.form_data)
+        response = self.client.post(reverse('save_person'), self.form_data)
         content = loads(response.content)
         self.assertTrue('saved' in content)
         self.assertEqual(content['saved'], True)
@@ -176,7 +177,7 @@ class DatepickerTest(TestCase):
         login = self.client.login(username='admin', password='admin')
         self.assertTrue(login)
 
-        response = self.client.post("/edit/")
+        response = self.client.post(reverse('edit'))
 
         self.assertContains(response, 'jquery_datepicker')
 
@@ -211,7 +212,7 @@ class TemplateTagTest(TestCase):
 
         pattern = '<a href="/admin/hello/person/\d+/">.+?</a>'
 
-        response = self.client.get('/')
+        response = self.client.get(reverse('bio'))
         self.assertEqual(response.status_code, 200)
         self.assertRegexpMatches(response.content, pattern)
 
