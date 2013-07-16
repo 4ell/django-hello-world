@@ -273,7 +273,7 @@ class SignalTestCase(TestCase):
 class RequestsPageTest(TestCase):
     def check_reqdata(self, id, priority):
         req = ReqData.objects.get(id=id)
-        self.assertEqual(req.priority, priority) 
+        self.assertEqual(req.priority, priority)
 
     def check_order(self, response, order=1):
         import re
@@ -299,7 +299,7 @@ class RequestsPageTest(TestCase):
         response = self.client.get(reverse('requests', args=['asc']))
         self.check_order(response)
         self.contains_forms(response)
-        
+
         response = self.client.get(reverse('requests', args=['desc']))
         self.check_order(response, -1)
         self.contains_forms(response)
