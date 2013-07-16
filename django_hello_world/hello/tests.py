@@ -268,3 +268,36 @@ class SignalTestCase(TestCase):
             model, action = value
             self.assertEqual(actions[index].model, model)
             self.assertEqual(actions[index].action, action)
+
+
+class RequestsPageTest(TestCase):
+    def check_reqdata(self, id, priority):
+        req = ReqData.objects.get(id=id)
+        self.assertEqual(req.priority, priority) 
+
+    def check_order(self, response, order=1):
+        import re
+        pattern = 'name="priority" value="(\d+)" id="id_priority"'
+        variants = re.findall(pattern, response.content)
+        variants = map(int, variants)
+        self.assertEqual(sorted(variants)[::order], variants)
+
+    def contains_forms(self, response):
+        pattern = 'name="priority" value="\d+" id="id_priority"'
+        self.assertRegexpMatches(response.content, pattern)
+        pattern = 'name="id" value="\d+"'
+        self.assertRegexpMatches(response.content, pattern)
+
+    def test_simple_http(self):
+        kwargs = {'id': 1, 'priority': 3}
+        response = self.client.post(reverse('requests'), kwargs)
+        self.check_reqdata(**kwargs)
+
+        response = self.client.get(reverse('requests'))
+        self.contains_forms(response)
+        response = self.client.get(reverse('requests', args=['asc']))
+        self.check_order(response)
+        self.contains_forms(response)
+        response = self.client.get(reverse('requests', args=['desc']))
+        self.check_order(response, -1)
+        self.contains_forms(response)
