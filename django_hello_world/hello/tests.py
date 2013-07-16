@@ -1,13 +1,15 @@
-from django.test import TestCase
-from django.test.client import RequestFactory
-from django.core.urlresolvers import reverse
-
-from django.template import RequestContext
+import PIL
 
 from json import loads
-from models import Person, ReqData, Action
 from datetime import date, datetime
-import PIL
+
+from django.test import TestCase
+from django.test.client import RequestFactory
+
+from django.core.urlresolvers import reverse
+from django.template import RequestContext
+
+from .models import Person, ReqData, Action
 
 
 class HttpTest(TestCase):

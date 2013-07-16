@@ -1,9 +1,10 @@
 from annoying.decorators import render_to, ajax_request
+
+from models import Person, ReqData
+from forms import PersonForm, ReqDataForm
+
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-
-from forms import PersonForm, ReqDataForm
-from models import Person, ReqData
 
 
 @render_to('hello/bio.html')

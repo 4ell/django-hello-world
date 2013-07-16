@@ -1,9 +1,5 @@
 statout = null
 
-function qs() {
-	return document.querySelector.apply(document, arguments)
-}
-
 $(document).ready(function() {
 	// bind 'myForm' and provide a simple callback function 
 	$('form#bio').ajaxForm({

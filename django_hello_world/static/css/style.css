@@ -18,13 +18,13 @@ h1, h2, h3, h4, h5 {
 	font-family: OpenSans, 'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
 }
 
-#menu {
+.menu {
 	min-width: 500px;
 	background: #222;
 }
 
-#menu h2,
-#menu div {
+.menu h2,
+.menu div {
 	font-weight: 500;
 	display: inline-block;
 	margin-right: 7px;
@@ -75,7 +75,7 @@ input[type=submit] {
     color: white;
 }
 
-#menu .status {
+.menu .status {
    margin-left: 70px;
    font-size: 13px;
    padding: 2px 7px;
@@ -84,12 +84,12 @@ input[type=submit] {
    color: black;
 }
 
-#menu .status.success {
+.menu .status.success {
    background: #8DC902;
    color: white;
 }
 
-#menu .status.error {
+.menu .status.error {
    background: #D02F38;
    color: white;
 }
