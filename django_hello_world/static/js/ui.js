@@ -2,16 +2,21 @@
 var ui = {
 	photo : {show: null},
 	status: {show: null},
-	errors: {show: null, hide: null}
+	errors: {show: null, hide: null},
+	qs: null
+}
+
+ui.qs  = function () {
+	return document.querySelector.apply(document, arguments)
 }
 
 ui.photo.show = function() {
-	var input = qs('#id_photo')
+	var input = ui.qs('#id_photo')
 	if (input.files && input.files[0]) {
 		var reader = new FileReader()
 
 		reader.onload = function (e) {
-			qs('img.photo').src = e.target.result
+			ui.qs('img.photo').src = e.target.result
 		}
 
 		reader.readAsDataURL(input.files[0])
