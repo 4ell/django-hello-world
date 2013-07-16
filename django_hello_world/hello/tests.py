@@ -295,9 +295,11 @@ class RequestsPageTest(TestCase):
 
         response = self.client.get(reverse('requests'))
         self.contains_forms(response)
+
         response = self.client.get(reverse('requests', args=['asc']))
         self.check_order(response)
         self.contains_forms(response)
+        
         response = self.client.get(reverse('requests', args=['desc']))
         self.check_order(response, -1)
         self.contains_forms(response)

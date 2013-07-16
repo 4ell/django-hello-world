@@ -2,7 +2,7 @@ from annoying.decorators import render_to, ajax_request
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from forms import PersonForm
+from forms import PersonForm, ReqDataForm
 from models import Person, ReqData
 
 
@@ -49,11 +49,23 @@ def save_person(request):
 
 
 @render_to('hello/reqs.html')
-def requests(request):
+def requests(request, order):
     try:
-        requests = ReqData.objects.all().order_by("-time")[:10]
+        if order == 'asc':
+            requests = ReqData.objects.all().order_by("priority")[:10]
+        elif order == 'desc':
+            requests = ReqData.objects.all().order_by("-priority")[:10]
+        else:
+            requests = ReqData.objects.all().order_by("-time")[:10]
     except:
         requests = []
+    if request.POST:
+        inst = ReqData.objects.get(id=request.POST['id'])
+        form = ReqDataForm(request.POST, instance=inst)
+        if form.is_valid():
+            form.save()
+    for req in requests:
+        req.form = ReqDataForm(instance=req)
     return {'requests': requests}
 
 

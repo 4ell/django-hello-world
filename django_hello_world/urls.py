@@ -11,7 +11,7 @@ urlpatterns = patterns('',
     url(r'^edit/save/', 'django_hello_world.hello.views.save_person', name='save_person'),
     url(r'^edit/', 'django_hello_world.hello.views.edit', name='edit'),
 
-    url(r'^requests/', 'django_hello_world.hello.views.requests', name='requests'),
+    url(r'^requests/(asc|desc)?/?', 'django_hello_world.hello.views.requests', name='requests'),
 
     url(r'^login/', 'django.contrib.auth.views.login', {
         'template_name': 'hello/login.html', 

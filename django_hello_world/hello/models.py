@@ -33,6 +33,7 @@ class ReqData(models.Model):
     get = models.TextField()
     post = models.TextField()
     cookies = models.TextField()
+    priority = models.IntegerField(default=0)
 
     def __unicode__(self):
         return '{0} {1}'.format(self.time, self.path)

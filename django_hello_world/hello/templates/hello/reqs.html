@@ -8,15 +8,27 @@
 
 <div class="dark">
 {% if requests.count %}
-<h3>Last {{ requests.count }} requests.</h3>
+<h3 style="display: inline-block;">Last {{ requests.count }} requests.</h3>
+<div style="font-size: 13px; display: inline; margin-left: 25px;">
+  Sort:
+  <a href="/requests/asc/">ascending</a> /
+  <a href="/requests/desc/">descending</a> /
+  <a href="/requests/">time</a>
+</div>
 {% else %}
 <h3>Request list is empty.</h3>
 {% endif %}
 
 {% for req in requests %}
 <div class="request">
-  Reqest #{{ forloop.counter0 }}
+  Reqest #{{ forloop.counter0 }} <br>
   Time: {{ req.time }} <br>
+  <form method="POST">
+    {{ req.form }}
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{ req.id }}">
+    <input type="submit" value="save">
+  </form>
   Path: {{ req.path }}
   Post: {{ req.post }}
   Get: {{ req.get }}
